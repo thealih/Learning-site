@@ -41,7 +41,7 @@ const CourseInfo = () => {
         setCourseCategory(courseInfo.categoryID);
       });
   }, []);
-  console.log(courseDetails);
+  // console.log(courseDetails);
 
   const submitComment = (newCommentBody) => {
     const localStorageData = JSON.parse(localStorage.getItem("user"));

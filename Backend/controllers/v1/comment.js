@@ -13,7 +13,7 @@ exports.create = async (req, res) => {
     creator: req.user._id,
     answer: 0,
     isAnswer: 0,
-    score
+    score,
   });
 
   return res.status(201).json(comment);
@@ -38,7 +38,7 @@ exports.getAll = async (req, res) => {
     if (!comment.mainCommendID) {
       comments.push({
         ...comment,
-        course: comment.course.name,
+        // course: comment.course.name,
         answerContent: mainCommentAnswerInfo,
       });
     }

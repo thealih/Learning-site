@@ -4,6 +4,7 @@ import swal from "sweetalert";
 
 export default function Comments() {
   const [comments, setComments] = useState([]);
+  console.log(comments);
 
   useEffect(() => {
     getAllComments();
@@ -201,7 +202,8 @@ export default function Comments() {
                   {index + 1}
                 </td>
                 <td>{comment.creator.name}</td>
-                <td>{comment.course}</td>
+                <td></td>
+                {/* <td>{comment.course}</td> */}
                 <td>
                   <button
                     type="button"
