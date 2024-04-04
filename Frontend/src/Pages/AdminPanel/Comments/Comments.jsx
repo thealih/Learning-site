@@ -202,8 +202,7 @@ export default function Comments() {
                   {index + 1}
                 </td>
                 <td>{comment.creator.name}</td>
-                <td></td>
-                {/* <td>{comment.course}</td> */}
+                <td>{comment.course.name}</td>
                 <td>
                   <button
                     type="button"

@@ -1,45 +1,53 @@
-import "./ArticleInfo.css";
-import Topbar from "../../Components/TopBar/Topbar";
-import Navbar from "../../Components/Navbar/Navbar";
-import Footer from "../../Components/Footer/Footer";
-import Breadcrumb from "../../Components/Breadcrumb/Breadcrumb";
-import CommentTextArea from "../../Components/CommentsTextArea/CommentsTextArea";
-import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import Topbar from "./../../Components/Topbar/Topbar";
+import Navbar from "./../../Components/Navbar/Navbar";
+import Footer from "./../../Components/Footer/Footer";
+import Breadcrumb from "./../../Components/Breadcrumb/Breadcrumb";
 import domPurify from "dompurify";
 
-const ArticleInfo = () => {
-  const [articleDetails, setArticleDetails] = useState([]);
+import "./ArticleInfo.css";
+import CommentsTextArea from "../../Components/CommentsTextArea/CommentsTextArea";
+import { useParams } from "react-router-dom";
+
+export default function ArticleInfo() {
+  const [articleDetails, setArticleDetails] = useState({});
   const [articleCategory, setArticleCategory] = useState({});
   const [articleCreator, setArticleCreator] = useState({});
   const [articleCreateDate, setArticleCreateDate] = useState("");
   const { articleName } = useParams();
+
   useEffect(() => {
     fetch(`http://localhost:4000/v1/articles/${articleName}`)
       .then((res) => res.json())
       .then((articleInfo) => {
-        console.log(articleInfo);
         setArticleDetails(articleInfo);
         setArticleCategory(articleInfo.categoryID);
-        // setArticleCreator(articleInfo.creator);
+        setArticleCreator(articleInfo.creator);
         setArticleCreateDate(articleInfo.createdAt);
       });
   }, []);
+
   return (
-    <div>
+    <>
       <Topbar />
       <Navbar />
+
       <Breadcrumb
         links={[
-          { id: 1, title: "خانه", to: "/" },
-          { id: 2, title: "مقاله ها", to: "/article-info/frontend" },
+          { id: 1, title: "خانه", to: "" },
+          {
+            id: 2,
+            title: "مقاله ها",
+            to: "category-info/frontend",
+          },
           {
             id: 3,
-            title: "ویو Vs ریکت",
-            to: "/article-info/vue-vs-react",
+            title: "ویو Vs ری‌اکت",
+            to: "course-info/js-expert",
           },
         ]}
       />
+
       <main className="main">
         <div className="container">
           <div className="row">
@@ -49,27 +57,20 @@ const ArticleInfo = () => {
                 <div className="article__header">
                   <div className="article-header__category article-header__item">
                     <i className="far fa-folder article-header__icon"></i>
-                    <Link to="#" className="article-header__text">
-                      {articleDetails.title}
-                    </Link>
+                    <a href="#" className="article-header__text">
+                      {articleCategory.title}
+                    </a>
                   </div>
                   <div className="article-header__category article-header__item">
                     <i className="far fa-user article-header__icon"></i>
                     <span className="article-header__text">
-                      ارسال شده توسط
-                      {/* {articleCreator.name} */}
-                    </span>
-                  </div>
-                  <div className="article-header__category article-header__item">
-                    <i className="far fa-clock article-header__icon"></i>
-                    <span className="article-header__text">
-                      ارسال شده توسط قدیر
+                      ارسال شده توسط {articleCreator.name}
                     </span>
                   </div>
                   <div className="article-header__category article-header__item">
                     <i className="far fa-eye article-header__icon"></i>
                     <span className="article-header__text">
-                      تاریخ انتشار : {articleCreateDate.slice(0, 10)}
+                      تاریخ انتشار: {articleCreateDate.slice(0, 10)}
                     </span>
                   </div>
                 </div>
@@ -106,7 +107,7 @@ const ArticleInfo = () => {
                   </span>
                 </div>
 
-                {/* <p className="article__paragraph paragraph">
+                <p className="article__paragraph paragraph">
                   جاوا اسکریپت یکی از زبان‌های برنامه‌نویسی اصلی حوزه فرانت‌اند
                   است که به واسطه فریم ورک‌های آن می‌توان انواع وب سایت‌ها،
                   اپلیکیشن‌ها و وب اپلیکیشن‌ها را طراحی کرد. به طور کلی بعد از
@@ -119,7 +120,7 @@ const ArticleInfo = () => {
                   در ادامه مطلب قصد داریم سایت‌های شاخص آموزش این زبان
                   برنامه‌نویسی در جهان را به شما معرفی کنیم و در آخر بگوییم که
                   بهترین سایت آموزش جاوا اسکریپت کدام است.
-                </p> */}
+                </p>
 
                 <div className="article-read">
                   <span className="article-read__title">
@@ -143,14 +144,16 @@ const ArticleInfo = () => {
                     </li>
                   </ul>
                 </div>
+
                 <img
                   src="/images/blog/2.jpg"
                   alt="Article Image"
                   className="article__seconadary-banner"
                 />
+
                 <div
                   className="article-section"
-                  dengerouslySetInnerHTML={{
+                  dangerouslySetInnerHTML={{
                     __html: domPurify.sanitize(articleDetails.body),
                   }}
                 >
@@ -167,12 +170,7 @@ const ArticleInfo = () => {
                     به شما خواهیم گفت که راه آسان دیگری برای یادگیری زبان جاوا
                     اسکریپت وجود دارد که شما بتوانید به واسطه آن به صورت رایگان
                     و به زبان فارسی این زبان را یاد بگیرید.
-                  </p>
-                  <img
-                    src="/images/blog/4.png"
-                    alt="article body img"
-                    className="article-section__img"
-                  /> */}
+                  </p> */}
                 </div>
 
                 <div className="article-social-media">
@@ -190,6 +188,7 @@ const ArticleInfo = () => {
                   </a>
                 </div>
               </div>
+
               <div className="suggestion-articles">
                 <div className="row">
                   <div className="col-6">
@@ -216,14 +215,13 @@ const ArticleInfo = () => {
                   </div>
                 </div>
               </div>
-              {/* <CommentTextArea /> */}
             </div>
+            <div className="col-4"></div>
           </div>
         </div>
       </main>
-      <Footer />
-    </div>
-  );
-};
 
-export default ArticleInfo;
+      <Footer />
+    </>
+  );
+}

@@ -5,6 +5,7 @@ import { useForm } from "./../../../hooks/useForm";
 import Input from "./../../../Components/Form/Input";
 import { minValidator } from "./../../../validators/rules";
 import Editor from "../../../Components/Form/Editor";
+import { Link } from "react-router-dom";
 
 export default function Articles() {
   const [articles, setArticles] = useState([]);
@@ -49,12 +50,11 @@ export default function Articles() {
         setArticles(allArticles);
       });
   }
-  console.log(articles);
 
   const removeArticle = (articleID) => {
     const localStorageDate = JSON.parse(localStorage.getItem("user"));
     swal({
-      title: "آیا از حذف مقاله اطمینان دارید؟",
+      title: "آیا از حذف مقاله اطمینان دارید؟`",
       icon: "warning",
       buttons: ["نه", "آره"],
     }).then((result) => {
@@ -78,9 +78,10 @@ export default function Articles() {
       }
     });
   };
+
   const createArticle = (event) => {
     event.preventDefault();
-    const localStorageData = JSON.parse(localStorage.getItem("user"));
+    const localStorageDate = JSON.parse(localStorage.getItem("user"));
     let formData = new FormData();
     formData.append("title", formState.inputs.title.value);
     formData.append("shortName", formState.inputs.shortName.value);
@@ -92,7 +93,7 @@ export default function Articles() {
     fetch(`http://localhost:4000/v1/articles`, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${localStorageData.token}`,
+        Authorization: `Bearer ${localStorageDate.token}`,
       },
       body: formData,
     }).then((res) => {
@@ -100,8 +101,39 @@ export default function Articles() {
         swal({
           title: "مقاله جدید با موفقیت ایجاد شد",
           icon: "success",
-          buttons: "تایید",
-        }).then(getAllArticles());
+          buttons: "اوکی",
+        }).then(() => {
+          getAllArticles();
+        });
+      }
+    });
+  };
+  const saveArticleAsDraft = (event) => {
+    event.preventDefault();
+    const localStorageDate = JSON.parse(localStorage.getItem("user"));
+    let formData = new FormData();
+    formData.append("title", formState.inputs.title.value);
+    formData.append("shortName", formState.inputs.shortName.value);
+    formData.append("description", formState.inputs.description.value);
+    formData.append("categoryID", articleCategory);
+    formData.append("cover", articleCover);
+    formData.append("body", articleBody);
+
+    fetch(`http://localhost:4000/v1/articles/draft`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${localStorageDate.token}`,
+      },
+      body: formData,
+    }).then((res) => {
+      if (res.ok) {
+        swal({
+          title: "مقاله جدید با موفقیت پیش نویس شد",
+          icon: "success",
+          buttons: "اوکی",
+        }).then(() => {
+          getAllArticles();
+        });
       }
     });
   };
@@ -149,6 +181,7 @@ export default function Articles() {
                 <label class="input-title" style={{ display: "block" }}>
                   چکیده
                 </label>
+                {/* <textarea style={{ width: "100%", height: "200px" }}></textarea> */}
 
                 <Input
                   element="textarea"
@@ -156,7 +189,7 @@ export default function Articles() {
                   id="description"
                   onInputHandler={onInputHandler}
                   validations={[minValidator(5)]}
-                  className=" article-textarea "
+                  className="article-textarea"
                 />
                 <span class="error-message text-danger"></span>
               </div>
@@ -167,7 +200,7 @@ export default function Articles() {
                   محتوا
                 </label>
                 <Editor value={articleBody} setValue={setArticleBody} />
-                <span class="error-message text-danger">Hi every one</span>
+                <span class="error-message text-danger"></span>
               </div>
             </div>
             <div class="col-6">
@@ -176,10 +209,8 @@ export default function Articles() {
                   کاور
                 </label>
                 <input
-                  style={{ padding: "5px 10px" }}
                   className="form-control form-control-lg"
                   type="file"
-                  id="file formFile"
                   onChange={(event) => {
                     setArticleCover(event.target.files[0]);
                   }}
@@ -207,7 +238,18 @@ export default function Articles() {
             <div class="col-12">
               <div class="bottom-form">
                 <div class="submit-btn">
-                  <input type="submit" value="افزودن" onClick={createArticle} />
+                  <input
+                    type="submit"
+                    value="انتشار"
+                    className="m-1"
+                    onClick={createArticle}
+                  />
+                  <input
+                    type="submit"
+                    value="پیش‌نویس"
+                    className="m-1 btn-secondary"
+                    onClick={saveArticleAsDraft}
+                  />
                 </div>
               </div>
             </div>
@@ -223,6 +265,8 @@ export default function Articles() {
               <th>عنوان</th>
               <th>لینک</th>
               <th>نویسنده</th>
+              <th>وضعیت</th>
+              <th>مشاهده</th>
               <th>ویرایش</th>
               <th>حذف</th>
             </tr>
@@ -233,7 +277,21 @@ export default function Articles() {
                 <td>{index + 1}</td>
                 <td>{article.title}</td>
                 <td>{article.shortName}</td>
-                <td>{article.creator}</td>
+
+                <td>{article.creator.name}</td>
+                <td>{article.publish === 1 ? "منتشر شده" : "پیش‌نویس"}</td>
+                <td>
+                  {article.publish === 1 ? (
+                    <i className="fa fa-check"></i>
+                  ) : (
+                    <Link
+                      to={`draft/${article.shortName}`}
+                      class="btn btn-primary edit-btn"
+                    >
+                      ادامه نوشتن
+                    </Link>
+                  )}
+                </td>
                 <td>
                   <button type="button" class="btn btn-primary edit-btn">
                     ویرایش

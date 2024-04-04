@@ -31,16 +31,19 @@ const Articles = () => {
           <div className="courses-content">
             <div className="container">
               <div className="row">
-                {ShownArticles.map((article) => (
-                  <ArticleBox {...article} />
-                ))}
+                {ShownArticles.filter((article) => article.publish === 1).map(
+                  (article) => (
+                    <ArticleBox key={article._id} {...article} />
+                  )
+                )}
               </div>
             </div>
           </div>
+
           <Pagination
             items={articles}
             itemsCount={3}
-            pathName="/articles"
+            pathname="/articles"
             setShownCourses={setShownArticles}
           />
         </div>
