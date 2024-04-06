@@ -1,26 +1,42 @@
-import "./CourseInfo.css";
-import Topbar from "../../Components/TopBar/TopBar";
-import Navbar from "../../Components/NAvbar/Navbar";
-import Footer from "../../Components/Footer/Footer";
+import React, { useState, useEffect } from "react";
+import Topbar from "./../../Components/Topbar/Topbar";
+import Navbar from "./../../Components/Navbar/Navbar";
+import Footer from "./../../Components/Footer/Footer";
 import Breadcrumb from "../../Components/Breadcrumb/Breadcrumb";
 import CourseDetailBox from "../../Components/CourseDetailBox/CourseDetailBox";
-import CommentTextArea from "../../Components/CommentsTextArea/CommentsTextArea";
+import CommentsTextArea from "../../Components/CommentsTextArea/CommentsTextArea";
 import Accordion from "react-bootstrap/Accordion";
-import { useEffect, useState } from "react";
-import { Link, json, useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import swal from "sweetalert";
 
-const CourseInfo = () => {
+import "./CourseInfo.css";
+
+export default function CourseInfo() {
   const [comments, setComments] = useState([]);
   const [sessions, setSessions] = useState([]);
-  const [createdAt, setCreatedAt] = useState([]);
-  const [updatedAt, setUpdatedAt] = useState([]);
+  const [createdAt, setCreatedAt] = useState("");
+  const [updatedAt, setUpdatedAt] = useState("");
   const [courseDetails, setCourseDetails] = useState({});
   const [courseTeacher, setCourseTeacher] = useState({});
   const [courseCategory, setCourseCategory] = useState({});
+  const [relatedCourses, setRelatedCourses] = useState([]);
+
   const { courseName } = useParams();
+
   useEffect(() => {
+    getCourseDetails();
+
+    fetch(`http://localhost:4000/v1/courses/related/${courseName}`)
+      .then((res) => res.json())
+      .then((allData) => {
+        console.log(allData);
+        setRelatedCourses(allData);
+      });
+  }, []);
+
+  function getCourseDetails() {
     const localStorageData = JSON.parse(localStorage.getItem("user"));
+
     fetch(`http://localhost:4000/v1/courses/${courseName}`, {
       method: "POST",
       headers: {
@@ -31,21 +47,20 @@ const CourseInfo = () => {
     })
       .then((res) => res.json())
       .then((courseInfo) => {
-        console.log(courseInfo);
-        setCourseDetails(courseInfo);
         setComments(courseInfo.comments);
         setSessions(courseInfo.sessions);
+        setCourseDetails(courseInfo);
         setCreatedAt(courseInfo.createdAt);
         setUpdatedAt(courseInfo.updatedAt);
         setCourseTeacher(courseInfo.creator);
         setCourseCategory(courseInfo.categoryID);
       });
-  }, []);
-  // console.log(courseDetails);
+  }
 
-  const submitComment = (newCommentBody) => {
+  const submitComment = (newCommentBody, commentScore) => {
     const localStorageData = JSON.parse(localStorage.getItem("user"));
-    fetch("http://localhost:4000/v1/comments", {
+
+    fetch(`http://localhost:4000/v1/comments`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -54,16 +69,154 @@ const CourseInfo = () => {
       body: JSON.stringify({
         body: newCommentBody,
         courseShortName: courseName,
+        score: commentScore,
       }),
     })
       .then((res) => res.json())
       .then((result) => {
         swal({
-          title: "نظر مورد نظر با موفقیت ثبت شد",
+          title: "کامنت موردنظر با موفقیت ثبت شد",
           icon: "success",
           buttons: "تایید",
         });
       });
+  };
+
+  const registerInCourse = (course) => {
+    if (course.price === 0) {
+      swal({
+        title: "آیا از ثبت نام در دوره اطمینان دارید؟",
+        icon: "warning",
+        buttons: ["نه", "آره"],
+      }).then((result) => {
+        if (result) {
+          fetch(`http://localhost:4000/v1/courses/${course._id}/register`, {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${
+                JSON.parse(localStorage.getItem("user")).token
+              }`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              price: course.price,
+            }),
+          }).then((res) => {
+            console.log(res);
+            if (res.ok) {
+              swal({
+                title: "ثبت نام با موفقیت انجام شد",
+                icon: "success",
+                buttons: "اوکی",
+              }).then(() => {
+                getCourseDetails();
+              });
+            }
+          });
+        }
+      });
+    } else {
+      swal({
+        title: "آیا از ثبت نام در دوره اطمینان دارید؟",
+        icon: "warning",
+        buttons: ["نه", "آره"],
+      }).then((result) => {
+        if (result) {
+          swal({
+            title: "در صورت داشتن کد تخفیف وارد کنید:",
+            content: "input",
+            buttons: ["ثبت نام بدون کد تخفیف", "اعمال کد تخفیف"],
+          }).then((code) => {
+            if (code === null) {
+              fetch(`http://localhost:4000/v1/courses/${course._id}/register`, {
+                method: "POST",
+                headers: {
+                  Authorization: `Bearer ${
+                    JSON.parse(localStorage.getItem("user")).token
+                  }`,
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  price: course.price,
+                }),
+              }).then((res) => {
+                console.log(res);
+                if (res.ok) {
+                  swal({
+                    title: "ثبت نام با موفقیت انجام شد",
+                    icon: "success",
+                    buttons: "اوکی",
+                  }).then(() => {
+                    getCourseDetails();
+                  });
+                }
+              });
+            } else {
+              fetch(`http://localhost:4000/v1/offs/${code}`, {
+                method: "POST",
+                headers: {
+                  Authorization: `Bearer ${
+                    JSON.parse(localStorage.getItem("user")).token
+                  }`,
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  course: course._id,
+                }),
+              })
+                .then((res) => {
+                  console.log(res);
+
+                  if (res.status == 404) {
+                    swal({
+                      title: "کد تخفیف معتبر نیست",
+                      icon: "error",
+                      buttons: "ای بابا",
+                    });
+                  } else if (res.status == 409) {
+                    swal({
+                      title: "کد تخفیف قبلا استفاده شده :/",
+                      icon: "error",
+                      buttons: "ای بابا",
+                    });
+                  } else {
+                    return res.json();
+                  }
+                })
+                .then((code) => {
+                  fetch(
+                    `http://localhost:4000/v1/courses/${course._id}/register`,
+                    {
+                      method: "POST",
+                      headers: {
+                        Authorization: `Bearer ${
+                          JSON.parse(localStorage.getItem("user")).token
+                        }`,
+                        "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify({
+                        price:
+                          course.price - (course.price * code.percent) / 100,
+                      }),
+                    }
+                  ).then((res) => {
+                    console.log(res);
+                    if (res.ok) {
+                      swal({
+                        title: "ثبت نام با موفقیت انجام شد",
+                        icon: "success",
+                        buttons: "اوکی",
+                      }).then(() => {
+                        getCourseDetails();
+                      });
+                    }
+                  });
+                });
+            }
+          });
+        }
+      });
+    }
   };
 
   return (
@@ -132,7 +285,7 @@ const CourseInfo = () => {
                       icon="graduation-cap"
                       title="وضعیت دوره:"
                       text={
-                        courseDetails.isCompleted === 1
+                        courseDetails.isComplete === 1
                           ? "به اتمام رسیده"
                           : "در حال برگزاری"
                       }
@@ -255,7 +408,10 @@ const CourseInfo = () => {
                       <Accordion.Item eventKey="0" className="accordion">
                         <Accordion.Header>جلسات دوره</Accordion.Header>
                         {sessions.map((session, index) => (
-                          <Accordion.Body className="introduction__accordion-body">
+                          <Accordion.Body
+                            key={session._id}
+                            className="introduction__accordion-body"
+                          >
                             {session.free === 1 ||
                             courseDetails.isUserRegisteredToThisCourse ? (
                               <>
@@ -315,9 +471,10 @@ const CourseInfo = () => {
                         className="techer-details__header-img"
                       />
                       <div className="techer-details__header-titles">
-                        <Link href="#" className="techer-details__header-link">
+                        <a href="#" className="techer-details__header-link">
+                          {/* محمدامین سعیدی راد */}
                           {courseTeacher.name}
-                        </Link>
+                        </a>
                         <span className="techer-details__header-skill">
                           Front End & Back End Developer
                         </span>
@@ -337,7 +494,7 @@ const CourseInfo = () => {
 
                 {/* Finish Teacher Details */}
 
-                <CommentTextArea
+                <CommentsTextArea
                   comments={comments}
                   submitComment={submitComment}
                 />
@@ -354,8 +511,10 @@ const CourseInfo = () => {
                         دانشجوی دوره هستید
                       </span>
                     ) : (
-                      <span className="course-info__register-title">
-                        <i className="fas fa-graduation-cap course-info__register-icon"></i>
+                      <span
+                        className="course-info__register-title"
+                        onClick={() => registerInCourse(courseDetails)}
+                      >
                         ثبت نام در دوره
                       </span>
                     )}
@@ -413,61 +572,32 @@ const CourseInfo = () => {
                     کلیک کنید
                   </span>
                 </div>
-                <div className="course-info">
-                  <span className="course-info__courses-title">
-                    دوره های مرتبط
-                  </span>
-                  <ul className="course-info__courses-list">
-                    <li className="course-info__courses-list-item">
-                      <a href="#" className="course-info__courses-link">
-                        <img
-                          src="/images/courses/js_project.png"
-                          alt="Course Cover"
-                          className="course-info__courses-img"
-                        />
-                        <span className="course-info__courses-text">
-                          پروژه های تخصصی با جاوا اسکریپت
-                        </span>
-                      </a>
-                    </li>
-                    <li className="course-info__courses-list-item">
-                      <a href="#" className="course-info__courses-link">
-                        <img
-                          src="/images/courses/fareelancer.png"
-                          alt="Course Cover"
-                          className="course-info__courses-img"
-                        />
-                        <span className="course-info__courses-text">
-                          تعیین قیمت پروژه های فریلنسری
-                        </span>
-                      </a>
-                    </li>
-                    <li className="course-info__courses-list-item">
-                      <a href="#" className="course-info__courses-link">
-                        <img
-                          src="/images/courses/nodejs.png"
-                          alt="Course Cover"
-                          className="course-info__courses-img"
-                        />
-                        <span className="course-info__courses-text">
-                          دوره Api نویسی
-                        </span>
-                      </a>
-                    </li>
-                    <li className="course-info__courses-list-item">
-                      <a href="#" className="course-info__courses-link">
-                        <img
-                          src="/images/courses/jango.png"
-                          alt="Course Cover"
-                          className="course-info__courses-img"
-                        />
-                        <span className="course-info__courses-text">
-                          متخصص جنگو
-                        </span>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
+                {relatedCourses.length !== 0 && (
+                  <div className="course-info">
+                    <span className="course-info__courses-title">
+                      دوره های مرتبط
+                    </span>
+                    <ul className="course-info__courses-list">
+                      {relatedCourses.map((course) => (
+                        <li className="course-info__courses-list-item">
+                          <Link
+                            to={`/course-info/${course.shortName}`}
+                            className="course-info__courses-link"
+                          >
+                            <img
+                              src={`http://localhost:4000/courses/covers/${course.cover}`}
+                              alt="Course Cover"
+                              className="course-info__courses-img"
+                            />
+                            <span className="course-info__courses-text">
+                              {course.name}
+                            </span>
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -477,6 +607,4 @@ const CourseInfo = () => {
       <Footer />
     </>
   );
-};
-
-export default CourseInfo;
+}
