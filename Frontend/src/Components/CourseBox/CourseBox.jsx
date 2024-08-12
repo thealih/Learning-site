@@ -2,12 +2,14 @@ import { useState } from "react";
 import "./CourseBox.css";
 import CircleSpinner from "./../CircleSpinner/CircleSpinner";
 import { Link } from "react-router-dom";
+import { LuUsers2 } from "react-icons/lu";
+import { FaChalkboardTeacher } from "react-icons/fa";
 const CourseBox = (props) => {
   const [isImgShow, setIsImgShow] = useState(false);
   const onImageLoaded = () => setIsImgShow(true);
 
   return (
-    <div className="col-4" style={{ width: `${props.isSlider && "100%"}` }}>
+    <div className="gap-2" style={{ width: `${props.isSlider && "100%"}` }}>
       <div className="course-box">
         <Link to={`/course-info/${props.shortName}`}>
           <img
@@ -28,12 +30,14 @@ const CourseBox = (props) => {
 
           <div className="course-box__rating-teacher">
             <div className="course-box__teacher">
-              <i className="fas fa-chalkboard-teacher course-box__teacher-icon"></i>
+              <FaChalkboardTeacher className="course-box__teacher-icon inline" />
+
+              {/* <i className="fas fa-chalkboard-teacher course-box__teacher-icon"></i> */}
               <Link to="#" className="course-box__teacher-link">
                 {props.creator}
               </Link>
             </div>
-            <div className="course-box__rating">
+            <div className="course-box__rating flex">
               <img
                 src="/images/svgs/star.svg"
                 alt="rating"
@@ -63,9 +67,10 @@ const CourseBox = (props) => {
           </div>
 
           <div className="course-box__status">
-            <div className="course-box__users">
-              <i className="fas fa-users course-box__users-icon"></i>
-              <span className="course-box__users-text">500</span>
+            <div className="course-box__users flex">
+              <LuUsers2 className=" course-box__users-icon" />
+              {/* <i className="fas fa-users course-box__users-icon"></i> */}
+              <span className="course-box__users-text">{props.registers}</span>
             </div>
             <span className="course-box__price">
               {props.price === 0

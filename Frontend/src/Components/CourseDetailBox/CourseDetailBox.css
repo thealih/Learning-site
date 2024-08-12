@@ -14,7 +14,7 @@
 
 .course-boxes__box-right-icon {
   font-size: 3.5rem;
-  color: var(--primary-color);
+  color: var(--dark-color);
 }
 
 .course-boxes__box-left {
@@ -65,7 +65,8 @@
 }
 
 .progress-bar {
-  background-color: #1fbd50;
+  background-color: var(--dark-color);
+  /* background-color: #1fbd50; */
 }
 
 /* Finish Course Progress Styles */
@@ -99,8 +100,8 @@
 }
 
 .introduction__btns-item {
-  color: var(--primary-color);
-  border: 2px solid var(--primary-color);
+  color: var(--dark-color);
+  border: 2px solid var(--dark-color);
   border-radius: 0.5rem;
   padding: 0.8rem 1.5rem;
   font-family: var(--font-bold);
@@ -110,7 +111,7 @@
 
 .introduction__btns-item:hover {
   color: var(--white-color);
-  background-color: var(--primary-color);
+  background-color: var(--dark-color);
 }
 
 .introduction__topic {
@@ -229,7 +230,7 @@
   display: flex;
   align-items: center;
   color: var(--white-color);
-  background-color: var(--primary-color);
+  background-color: var(--dark-color);
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
 }

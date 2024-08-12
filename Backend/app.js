@@ -14,6 +14,8 @@ const notificationRoutes = require("./routes/v1/notification");
 const infosRoutes = require("./routes/v1/infos");
 const usersRoutes = require("./routes/v1/user");
 const offsRoutes = require("./routes/v1/off");
+const ordersRoutes = require("./routes/v1/order");
+const ticketsRoutes = require("./routes/v1/ticket");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 
@@ -43,5 +45,7 @@ app.use("/v1/search", searchRoutes);
 app.use("/v1/notifications", notificationRoutes);
 app.use("/v1/infos", infosRoutes);
 app.use("/v1/offs", offsRoutes);
+app.use("/v1/orders", ordersRoutes);
+app.use("/v1/tickets", ticketsRoutes);
 
 module.exports = app;

@@ -215,12 +215,15 @@ exports.getSessionInfo = async (req, res) => {
 };
 
 exports.getRelated = async (req, res) => {
-  const { shortName } = req.params
-  const course = await courseModel.findOne({ shortName })
-  let relatedCourses = await courseModel.find({ categoryID: course.categoryID })
+  const { shortName } = req.params;
+  const course = await courseModel.findOne({ shortName });
+  let relatedCourses = await courseModel.find({
+    categoryID: course.categoryID,
+  });
 
-  relatedCourses = relatedCourses.filter(course => course.shortName !== shortName)
+  relatedCourses = relatedCourses.filter(
+    (course) => course.shortName !== shortName
+  );
 
-  res.json(relatedCourses.splice(0, 4))
-
-}
+  res.json(relatedCourses.splice(0, 4));
+};

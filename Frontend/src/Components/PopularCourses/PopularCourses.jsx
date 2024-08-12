@@ -14,7 +14,7 @@ const PopularCourses = () => {
       .then((popularCourses) => setCourses(popularCourses));
   }, []);
   return (
-    <div className="popular">
+    <div className="popular px-8 md:px-4 lg:px-20 my-10 lg:my-0,mt-10 2xl:px-28">
       <div className="container">
         <SectionHeader
           title="محبوب ترین دوره ها"
@@ -28,6 +28,23 @@ const PopularCourses = () => {
                 spaceBetween={30}
                 pagination={{
                   clickable: true,
+                }}
+                breakpoints={{
+                  // when window width is >= 320px
+                  320: {
+                    slidesPerView: 1,
+                    spaceBetween: 10,
+                  },
+                  // when window width is >= 768px
+                  768: {
+                    slidesPerView: 2,
+                    spaceBetween: 20,
+                  },
+                  // when window width is >=  1024px
+                  1024: {
+                    slidesPerView: 3,
+                    spaceBetween: 30,
+                  },
                 }}
                 loop={true}
                 className="mySwiper"

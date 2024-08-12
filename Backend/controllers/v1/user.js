@@ -1,6 +1,7 @@
 const userModel = require("../../models/user");
 const banUserModel = require("../../models/ban-phone");
 const courseUserModel = require("../../models/course-user");
+const bcrypt = require("bcrypt");
 
 // exports.create = async (req, res) => {
 //   const { name, description, shortName, categoryID, price } = req.body;
@@ -53,11 +54,33 @@ exports.banUser = async (req, res) => {
   if (banUserResult) {
     return res.status(200).json({ msg: "User ban successfully" });
   }
-  return res.status(500).json({ msg: 'Error' })
+  return res.status(500).json({ msg: "Error" });
 };
 
 exports.getUserCourses = async (req, res) => {
-  const userCourses = await courseUserModel.find({ user: req.user._id }).populate('course').lean()
+  const userCourses = await courseUserModel
+    .find({ user: req.user._id })
+    .populate("course")
+    .lean();
 
-  res.json(userCourses)
-}
+  res.json(userCourses);
+};
+
+exports.updateUser = async (req, res) => {
+  const { name, username, email, password, phone } = req.body;
+
+  const hashedPassword = await bcrypt.hash(password, 12);
+
+  const user = await userModel.findOneAndUpdate(
+    { _id: req.user._id },
+    {
+      name,
+      username,
+      email,
+      password: hashedPassword,
+      phone,
+    }
+  );
+
+  return res.json(user);
+};

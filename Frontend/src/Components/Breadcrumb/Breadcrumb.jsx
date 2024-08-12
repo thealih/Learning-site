@@ -6,12 +6,14 @@ const Breadcrumb = ({ links }) => {
     <section className="breadcrumb">
       <div className="container">
         <div className="breadcrumb__content">
-          <div className="breadcrumb__home-content-icon">
-            <i className="fas fa-home breadcrumb__home-icon"></i>
-          </div>
-          <ul className="breadcrumb__list">
+          <Link to={"/"}>
+            <div className="breadcrumb__home-content-icon max-sm:w-24">
+              <i className="fas fa-home breadcrumb__home-icon"></i>
+            </div>
+          </Link>
+          <ul className="breadcrumb__list max-sm:flex-wrap">
             {links.map((link) => (
-              <li className="breadcrumb__item">
+              <li className="breadcrumb__item max-sm::ml-5">
                 <Link to={link.to} className="breadcrumb__link">
                   {link.title}
                   {link.id !== links.length ? (

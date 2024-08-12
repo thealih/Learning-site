@@ -11,8 +11,8 @@ const LastCourses = () => {
       .then((allCourses) => setCourses(allCourses));
   }, []);
   return (
-    <div className="courses">
-      <div className="container">
+    <div className="courses px-8 md:px-4 lg:px-20 2xl:px-28 mx-auto">
+      <div className="container mx-auto">
         <SectionHeader
           title="جدیدترین دوره ها"
           desc="سکوی پرتاب به سوی موفقیت ها"
@@ -21,7 +21,7 @@ const LastCourses = () => {
         />
         <div className="courses-content">
           <div className="container">
-            <div className="row">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {courses.splice(0, 6).map((course) => (
                 <CourseBox {...course} />
               ))}

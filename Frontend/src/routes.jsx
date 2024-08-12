@@ -21,6 +21,15 @@ import Comments from "./Pages/AdminPanel/Comments/Comments";
 import Offs from "./Pages/AdminPanel/Offs/Offs";
 import Draft from "./Pages/AdminPanel/Articles/Draft";
 import PAdminIndex from "./Pages/AdminPanel/Index/Index";
+import UserPanel from "./Pages/UserPanel/Index";
+import UserPanelIndex from "./Pages/UserPanel/Index/Index";
+import UserPanelOrder from "./Pages/UserPanel/Orders/Orders";
+import UserPanelCourses from "./Pages/UserPanel/Courses/Courses";
+import SendTicket from "./Pages/UserPanel/Tickets/SendTicket";
+import UserPanelTickets from "./Pages/UserPanel/Tickets/Tickets";
+import UserPanelTicketAnswer from "./Pages/UserPanel/Tickets/TicketAnswer";
+import UserPanelEditAccount from "./Pages/UserPanel/EditAccount/EditAccount";
+import SiteCategories from "./Pages/SiteCategories/SiteCategories";
 
 const routes = [
   { path: "/", element: <Index /> },
@@ -30,6 +39,7 @@ const routes = [
   { path: "/courses/:page", element: <Courses /> },
   { path: "/articles/:page", element: <Articles /> },
   { path: "/login", element: <Login /> },
+  { path: "/site-categories", element: <SiteCategories /> },
   { path: "/register", element: <Register /> },
   { path: "/contact", element: <Contact /> },
   { path: "/search/:value", element: <Search /> },
@@ -50,6 +60,19 @@ const routes = [
       { path: "sessions", element: <Sessions /> },
       { path: "comments", element: <Comments /> },
       { path: "offs", element: <Offs /> },
+    ],
+  },
+  {
+    path: "/my-account/*",
+    element: <UserPanel />,
+    children: [
+      { path: "", element: <UserPanelIndex /> },
+      { path: "orders", element: <UserPanelOrder /> },
+      { path: "buyed", element: <UserPanelCourses /> },
+      { path: "tickets", element: <UserPanelTickets /> },
+      { path: "send-ticket", element: <SendTicket /> },
+      { path: "tickets/answer/:id", element: <UserPanelTicketAnswer /> },
+      { path: "edit-account", element: <UserPanelEditAccount /> },
     ],
   },
 ];

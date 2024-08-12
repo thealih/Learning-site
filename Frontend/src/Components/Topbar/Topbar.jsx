@@ -1,6 +1,8 @@
 import { useEffect, useState, memo } from "react";
 import { Link } from "react-router-dom";
 import "./Topbar.css";
+import { FaGithub, FaLinkedin, FaLinkedinIn, FaPen } from "react-icons/fa";
+import { FaUserPen } from "react-icons/fa6";
 
 const Topbar = () => {
   const [allTopbarLinks, setAllTopbarLinks] = useState([]);
@@ -23,11 +25,11 @@ const Topbar = () => {
     return shuffled.slice(0, randomCount);
   };
   return (
-    <div className="top-bar">
+    <div className="top-bar hidden md:block">
       <div className="container-fluid">
         <div className="top-bar__content">
           <div className="top-bar__right">
-            <ul className="top-bar__menu">
+            {/* <ul className="top-bar__menu">
               {getRandomItemsFromArray(allTopbarLinks, 5).map((link) => (
                 <li className="top-bar__item" key={link._id}>
                   <Link to={link.href} className="top-bar__link">
@@ -35,22 +37,36 @@ const Topbar = () => {
                   </Link>
                 </li>
               ))}
-            </ul>
+            </ul> */}
+            <div>
+              <p>این پروژه صرفا برای نمونه کار است و وجود خارجی ندارد</p>
+            </div>
           </div>
           <div className="top-bar__left">
             <div className="top-bar__email">
-              <a href="#" className="top-bar__email-text top-bar__link">
-                {/* sabzlearn@gmail.com */}
-                {indexInfo.email}
+              <a href="#" className="top-bar__email-text top-bar__link ">
+                علی هاشمی
               </a>
-              <i className="fas fa-envelope top-bar__email-icon"></i>
+
+              <FaUserPen className="top-bar__phone-icon" />
+            </div>
+            <div className="top-bar__email">
+              <a href="#" className="top-bar__email-text top-bar__link">
+                a.hashemi6336@gmail.com
+                {/* {indexInfo.email} */}
+              </a>
+              <i className="fas fa-envelope top-bar__phone-icon mx-2"></i>
             </div>
             <div className="top-bar__phone">
-              <a href="#" className="top-bar__phone-text top-bar__link">
-                {/* 09921558293 */}
-                {indexInfo.phone}
+              <a href="#" className="">
+                {/* {indexInfo.phone} */}
+                <FaGithub className="top-bar__phone-icon mx-2" />
               </a>
-              <i className="fas fa-phone top-bar__phone-icon"></i>
+            </div>
+            <div className="top-bar__phone">
+              <a href="#" className="">
+                <FaLinkedin className="top-bar__phone-icon mx-2" />
+              </a>
             </div>
           </div>
         </div>

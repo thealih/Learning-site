@@ -13,7 +13,7 @@ const LastArticle = () => {
   }, []);
 
   return (
-    <section className="articles">
+    <section className="articles px-8 md:px-4 lg:px-20 my-10 lg:my-0,mt-10 2xl:px-28">
       <div className="container">
         <SectionHeader
           title="جدیدترین مقاله ها"
@@ -23,7 +23,7 @@ const LastArticle = () => {
         />
 
         <div className="articles__content">
-          <div className="row">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
             {articles
               .filter((article) => article.publish === 1)
               .slice(0, 3)

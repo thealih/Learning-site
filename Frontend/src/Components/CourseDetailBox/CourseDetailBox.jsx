@@ -1,7 +1,7 @@
 import "./CourseDetailBox.css";
 const CourseDetailBox = ({ title, text, icon }) => {
   return (
-    <div className="col-4">
+    <div className="max-sm:w-full ">
       <div className="course-boxes__box">
         <div className="course-boxes__box-right">
           <i className={`course-boxes__box-right-icon fas fa-${icon}`}></i>

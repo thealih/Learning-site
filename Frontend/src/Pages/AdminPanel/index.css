@@ -144,7 +144,7 @@ ul {
   font-size: 18px;
 }
 #sidebar .sidebar-menu {
-  margin-top: 40px;
+  margin-top: 0 !important;
 }
 #sidebar .sidebar-menu ul li:hover {
   background: #353c50;

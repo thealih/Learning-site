@@ -2,7 +2,7 @@ import "./AboutUsBox.css";
 const AboutUsBox = ({ title, desc, icon }) => {
   const iconClass = `${icon} about-us__icon`;
   return (
-    <div className="col-6">
+    <div className="">
       <div className="about-us__box">
         <div className="about-us__box-right">
           <i className={iconClass}></i>

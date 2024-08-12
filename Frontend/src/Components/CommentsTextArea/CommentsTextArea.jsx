@@ -4,7 +4,11 @@ import AuthContext from "../../context/authContext";
 
 import "./CommentsTextArea.css";
 
-export default function CommentsTextArea({ comments, submitComment }) {
+export default function CommentsTextArea({
+  comments,
+  submitComment,
+  className,
+}) {
   const [newCommentBody, setNewCommentBody] = useState("");
   const [commentScore, setCommentScore] = useState("-1");
   const authContext = useContext(AuthContext);
@@ -14,7 +18,7 @@ export default function CommentsTextArea({ comments, submitComment }) {
   };
 
   return (
-    <div className="comments">
+    <div className={`comments ${className}`}>
       <div className="comments__header">
         <div className="comments__header-icon-content">
           <i className="comments__header-icon far fa-comment"></i>
@@ -31,7 +35,7 @@ export default function CommentsTextArea({ comments, submitComment }) {
             {comments.map((comment) => (
               <div className="comments__item" key={comment._id}>
                 <div className="comments__question">
-                  <div className="comments__question-header">
+                  <div className="comments__question-header max-sm:grid w-full gap-y-5 max-sm:grid-cols-1 ">
                     <div className="comments__question-header-right">
                       <span className="comments__question-name comment-name">
                         {comment.creator.name}
@@ -39,11 +43,11 @@ export default function CommentsTextArea({ comments, submitComment }) {
                       <span className="comments__question-status comment-status">
                         {comment.creator.role === "ADMIN" ? "مدیر" : "کاربر"}
                       </span>
-                      <span className="comments__question-date comment-date">
-                        {comment.createdAt.slice(0, 10)}
-                      </span>
                     </div>
                     <div className="comments__question-header-left">
+                      <span className="comments__question-date comment-date ml-5">
+                        {comment.createdAt.slice(0, 10)}
+                      </span>
                       <a
                         className="comments__question-header-link comment-link"
                         href="#"

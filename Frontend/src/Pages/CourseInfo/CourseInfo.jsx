@@ -240,7 +240,7 @@ export default function CourseInfo() {
         ]}
       />
 
-      <section className="course-info">
+      <section className="course-info mt-0 md:mt-4 px-8 md:mx-4 lg:mx-20 2xl:mx-28">
         <div className="container">
           <div className="row">
             <div className="col-6">
@@ -274,13 +274,13 @@ export default function CourseInfo() {
         </div>
       </section>
 
-      <main className="main">
-        <div className="container">
-          <div className="row">
-            <div className="col-8">
+      <main className="mt-0 md:mt-4 px-8 md:mx-4 lg:mx-20 2xl:mx-28">
+        <div className="container ">
+          <div className="lg:grid lg:grid-cols-3 lg:gap-x-12">
+            <div className="lg:col-span-2">
               <div className="course">
                 <div className="course-boxes">
-                  <div className="row">
+                  <div className="lg:grid lg:grid-cols-3 lg:gap-3 lg:mx-5">
                     <CourseDetailBox
                       icon="graduation-cap"
                       title="وضعیت دوره:"
@@ -394,7 +394,7 @@ export default function CourseInfo() {
                       وب اضافه شد، به راحتی بتوانید آن را یاد بگیرید.
                     </p>
                   </div>
-                  <div className="introduction__btns">
+                  <div className="introduction__btns grid lg:grid-cols-2 text-center">
                     <a href="#" className="introduction__btns-item">
                       دانلود همگانی ویدیوها
                     </a>
@@ -422,13 +422,13 @@ export default function CourseInfo() {
                                   <i className="fab fa-youtube introduction__accordion-icon"></i>
                                   <Link
                                     to={`/${courseName}/${session._id}`}
-                                    className="introduction__accordion-link"
+                                    className="introduction__accordion-link max-sm:text-lg"
                                   >
                                     {session.title}
                                   </Link>
                                 </div>
                                 <div className="introduction__accordion-left">
-                                  <span className="introduction__accordion-time">
+                                  <span className="introduction__accordion-time max-sm:text-lg">
                                     {session.time}
                                   </span>
                                 </div>
@@ -497,11 +497,12 @@ export default function CourseInfo() {
                 <CommentsTextArea
                   comments={comments}
                   submitComment={submitComment}
+                  className={"max-lg:hidden"}
                 />
               </div>
             </div>
 
-            <div className="col-4">
+            <div className="sm:col-span-1">
               <div className="courses-info">
                 <div className="course-info">
                   <div className="course-info__register">
@@ -556,8 +557,13 @@ export default function CourseInfo() {
                       لینک کوتاه
                     </span>
                   </div>
+                  <CommentsTextArea
+                    comments={comments}
+                    submitComment={submitComment}
+                    className={"lg:hidden"}
+                  />
                   <span className="course-info__short-url">
-                    https://sabzlearn.ir/?p=117472
+                    https://iranlearn.ir/?p=117472
                   </span>
                 </div>
                 <div className="course-info">
@@ -565,9 +571,11 @@ export default function CourseInfo() {
                     سرفصل های دوره
                   </span>
                   <span className="course-info__topic-text">
+                    {" "}
                     برای مشاهده و یا دانلود دوره روی کلمه
                     <a href="#" style={{ color: "blue", fontWeight: "bold" }}>
-                      لینک
+                      {" "}
+                      لینک{" "}
                     </a>
                     کلیک کنید
                   </span>

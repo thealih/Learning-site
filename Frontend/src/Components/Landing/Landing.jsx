@@ -14,7 +14,7 @@ const Landing = ({ info }) => {
   };
 
   return (
-    <section className="landing">
+    <section className="landing md:pt-24 flex justify-center">
       <div className="container">
         <h1 className="landing__title">
           <Typewriter
@@ -24,7 +24,7 @@ const Landing = ({ info }) => {
                 .start()
                 .pauseFor(2000)
                 .deleteAll()
-                .typeString("سبزلرن - آکادمی خصوصی برنامه نویسی")
+                .typeString("ایران لرن - آکادمی خصوصی برنامه نویسی")
                 .start()
                 .pauseFor(2000);
             }}
@@ -33,10 +33,11 @@ const Landing = ({ info }) => {
             }}
           />
         </h1>
-        <h2 className="landing__subtitle">
-          با آکادمی سبزلرن، برنامه نویسی رو با خیال راحت یاد بگیر و پیشرفت کن.
+        <h2 className="landing__subtitle mt-11 sm:mt-5">
+          با آکادمی ایران لرن، برنامه نویسی رو با خیال راحت یاد بگیر و پیشرفت
+          کن.
         </h2>
-        <div className="landing__searchbar">
+        <div className="landing__searchbar w-11/12 md:w-[700px]">
           <input
             type="text"
             className="landing__searchbar-input"
@@ -52,7 +53,7 @@ const Landing = ({ info }) => {
             <i className="fas fa-search landing__searchbar-icon"></i>
           </button>
         </div>
-        <div className="landing-status">
+        <div className="landing-status grid grid-cols-1 md:grid-cols-3 gap-y-10">
           <div className="landing-status__item">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -64,7 +65,7 @@ const Landing = ({ info }) => {
             </svg>
             <LandingCounter count={info.usersCount} />
             <span className="landing-status__text">
-              کاربر توی سبزلرن ثبت نام کردن
+              کاربر توی ایران لرن ثبت نام کردن
             </span>
           </div>
 

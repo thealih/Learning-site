@@ -48,10 +48,10 @@ export default function ArticleInfo() {
         ]}
       />
 
-      <main className="main">
+      <main>
         <div className="container">
-          <div className="row">
-            <div className="col-8">
+          <div className="row lg:grid lg:grid-cols-3 lg:gap-3 lg:mx-5 ">
+            <div className="lg:col-span-2">
               <div className="article">
                 <h1 className="article__title">{articleDetails.title}</h1>
                 <div className="article__header">
@@ -134,12 +134,12 @@ export default function ArticleInfo() {
                     </li>
                     <li className="article-read__item">
                       <a href="#" className="article-read__link">
-                        یک راه آسان‌تر، دوره‌ های جاوا اسکریپت آکادمی سبزلرن!
+                        یک راه آسان‌تر، دوره‌ های جاوا اسکریپت آکادمی ایران لرن!
                       </a>
                     </li>
                     <li className="article-read__item">
                       <a href="#" className="article-read__link">
-                        ثبت نام در دوره‌ های جاوا اسکریپت سبزلرن:
+                        ثبت نام در دوره‌ های جاوا اسکریپت ایران لرن:
                       </a>
                     </li>
                   </ul>
@@ -216,7 +216,7 @@ export default function ArticleInfo() {
                 </div>
               </div>
             </div>
-            <div className="col-4"></div>
+            <div className="lg:col-span-1"></div>
           </div>
         </div>
       </main>

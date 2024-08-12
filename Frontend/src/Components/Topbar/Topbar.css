@@ -39,12 +39,12 @@
 
 .top-bar__email-text,
 .top-bar__phone-text {
-  padding: 0 0.8rem;
+  padding: 0 1rem 0 0.2rem;
 }
 
 .top-bar__email-icon,
 .top-bar__phone-icon {
-  color: var(--primary-color);
+  /* color: var(--primary-color); */
   font-size: 2rem;
 }
 
